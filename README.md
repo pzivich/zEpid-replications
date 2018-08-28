@@ -29,9 +29,7 @@ https://github.com/alexpkeil1/Gformula-tutorial
 
 zEpid-replications/Keil_2014 contains: 
 
-	gform_keil.py 	(code replicating analysis)
-	keil.csv        (file containing all data)
-	results.md   	(regression model results)
+	gformula_keil.ipynb 	(code and results)
 
 
 ## IPW
@@ -43,6 +41,7 @@ Ewing's sarcoma dataset (n = 76).
 
 zEpid-replications/Cole_2014 contains: 
 
-	iptw_cole.py 	(code replicating analysis)
-	results.md   	(regression model results)
+	ipw_cole.py 	    (code and results)
+
+
 
