@@ -12,6 +12,8 @@ intuition with a worked example. Epidemiology (Cambridge, Mass). 2014;25(6):889-
 2) Cole SR, Hernan MA. Adjusted survival curves with inverse probability weights. Comput Methods Programs Biomed. 
 2004;75(1):45-9.
 
+Additionally, tutorials (which will be later added to the website) are available here.
+
 If you have any recommendations on studies you would like to see replicated with *zEpid*, you 
 can request either through GitHub or gmail (zepidpy)
 
@@ -41,7 +43,15 @@ Ewing's sarcoma dataset (n = 76).
 
 zEpid-replications/Cole_2014 contains: 
 
-	ipw_cole.py 	    (code and results)
+	ipw_cole.ipynb 	    (code and results)
 
 
+
+## Tutorials
+
+### IPMW: single variable
+Example of inverse probability of missing weights for a single missing variable. The example uses
+the sample data zet included with *zEpid*
+
+	Tutorials/IPMW_single.ipynb
 
