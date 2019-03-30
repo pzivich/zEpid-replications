@@ -1,8 +1,7 @@
 ##################################################################
 # R-code for testing/comparisons I have made with zEpid
 ##################################################################
-# Last edit; 2019/2/16
-
+# Last edit; 2019/3/30
 
 ### TMLE testing ###
 library(dplyr)
@@ -85,3 +84,55 @@ result <- tmle(Y,A,W,Delta = D,
                family="gaussian", verbose = T)
 summary(result)
 result$estimates$ATE
+
+### Iterative Conditional g-formula testing ###
+library(ltmle)
+
+data <- read.csv(file="C:/Users/zivic/Desktop/data.csv", header=TRUE, sep=",")
+ids <- data$id
+drops <- c("W", "id")
+data <- data[ , !(names(data) %in% drops)]
+data$Y2[data$Y1 == 1] <- 1
+data$Y3[data$Y2 == 1] <- 1
+
+result <- ltmle(data, Anodes=c("A1", "A2", "A3"), Cnodes=NULL, Lnodes=c("L1", "L2", "L3"), Ynodes=c("Y1", "Y2", "Y3"), abar=c(1, 1, 1),
+                Qform=c(Y1='Q.kplus1 ~ A1 + L1', Y2='Q.kplus1 ~ A2 + L2', Y3='Q.kplus1 ~ A3 + L3'), 
+                gcomp=TRUE, SL.library=NULL, survivalOutcome = TRUE, id=ids)
+result$estimates  # Treat-all = 0.4140978
+
+result <- ltmle(data, Anodes=c("A1", "A2", "A3"), Cnodes=NULL, Lnodes=c("L1", "L2", "L3"), Ynodes=c("Y1", "Y2", "Y3"), abar=c(0, 0, 0),
+                Qform=c(Y1='Q.kplus1 ~ A1 + L1', Y2='Q.kplus1 ~ A2 + L2', Y3='Q.kplus1 ~ A3 + L3'), 
+                gcomp=TRUE, SL.library=NULL, survivalOutcome = TRUE, id=ids)
+result$estimates  # Treat-all = 0.6464508
+
+drops <- c("A3", "Y3", "L3")
+data2 <- data[ , !(names(data) %in% drops)]
+result <- ltmle(data2, Anodes=c("A1", "A2"), Cnodes=NULL, Lnodes=c("L1", "L2"), Ynodes=c("Y1", "Y2"), abar=c(1, 1),
+                Qform=c(Y1='Q.kplus1 ~ A1 + L1', Y2='Q.kplus1 ~ A2 + L2'), 
+                gcomp=TRUE, SL.library=NULL, survivalOutcome = TRUE, id=ids)
+result$estimates  # Treat-all = 0.3349204
+
+result <- ltmle(data2, Anodes=c("A1", "A2"), Cnodes=NULL, Lnodes=c("L1", "L2"), Ynodes=c("Y1", "Y2"), abar=c(0, 0),
+                Qform=c(Y1='Q.kplus1 ~ A1 + L1', Y2='Q.kplus1 ~ A2 + L2'), 
+                gcomp=TRUE, SL.library=NULL, survivalOutcome = TRUE, id=ids)
+result$estimates  # Treat-all = 0.5122774
+
+result <- ltmle(data, Anodes=c("A1", "A2", "A3"), Cnodes=NULL, Lnodes=c("L1", "L2", "L3"), Ynodes=c("Y1", "Y2", "Y3"), abar=c(1, 0, 1),
+                Qform=c(Y1='Q.kplus1 ~ A1 + L1', Y2='Q.kplus1 ~ A2 + L2', Y3='Q.kplus1 ~ A3 + L3'), 
+                gcomp=TRUE, SL.library=NULL, survivalOutcome = TRUE, id=ids)
+result$estimates  # Treat-all = 0.4916937
+
+result <- ltmle(data, Anodes=c("A1", "A2", "A3"), Cnodes=NULL, Lnodes=c("L1", "L2", "L3"), Ynodes=c("Y1", "Y2", "Y3"), abar=c(0, 1, 0),
+                Qform=c(Y1='Q.kplus1 ~ A1 + L1', Y2='Q.kplus1 ~ A2 + L2', Y3='Q.kplus1 ~ A3 + L3'), 
+                gcomp=TRUE, SL.library=NULL, survivalOutcome = TRUE, id=ids)
+result$estimates  # Treat-all = 0.5634683
+
+result <- ltmle(data, Anodes=c("A1", "A2", "A3"), Cnodes=NULL, Lnodes=c("L1", "L2", "L3"), Ynodes=c("Y1", "Y2", "Y3"), abar=c(1, 1, 1),
+                Qform=c(Y1='Q.kplus1 ~ A1 + L1', Y2='Q.kplus1 ~ A2 + A1 + L2', Y3='Q.kplus1 ~ A3 + A2 + L3'), 
+                gcomp=TRUE, SL.library=NULL, survivalOutcome = TRUE, id=ids)
+result$estimates  # Treat-all = 0.4334696
+
+result <- ltmle(data, Anodes=c("A1", "A2", "A3"), Cnodes=NULL, Lnodes=c("L1", "L2", "L3"), Ynodes=c("Y1", "Y2", "Y3"), abar=c(0, 0, 0),
+                Qform=c(Y1='Q.kplus1 ~ A1 + L1', Y2='Q.kplus1 ~ A2 + A1 + L2', Y3='Q.kplus1 ~ A3 + A2 + L3'), 
+                gcomp=TRUE, SL.library=NULL, survivalOutcome = TRUE, id=ids)
+result$estimates  # Treat-all = 0.6282985
