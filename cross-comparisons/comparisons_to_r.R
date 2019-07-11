@@ -136,3 +136,57 @@ result <- ltmle(data, Anodes=c("A1", "A2", "A3"), Cnodes=NULL, Lnodes=c("L1", "L
                 Qform=c(Y1='Q.kplus1 ~ A1 + L1', Y2='Q.kplus1 ~ A2 + A1 + L2', Y3='Q.kplus1 ~ A3 + A2 + L3'), 
                 gcomp=TRUE, SL.library=NULL, survivalOutcome = TRUE, id=ids)
 result$estimates  # Treat-all = 0.6282985
+
+### G-estimation Tests ###
+library(DTRreg)
+
+data <- read.csv(file="C:/Users/zivic/Desktop/data.csv", header=TRUE, sep=",")
+
+# Continuous: 1 parameter
+snm1 <- DTRreg(cd4_wk45, list(~ 1), 
+               list(art ~ male + age0 + age_sq + age_cu + cd40 + cd4_sq + cd4_cu + dvl0), 
+               list(~ 1), data=data, method='gest')
+summary(snm1)
+
+# Continuous: 2 parameter
+snm1 <- DTRreg(cd4_wk45, list(~ male), 
+               list(art ~ male + age0 + age_sq + age_cu + cd40 + cd4_sq + cd4_cu + dvl0), 
+               list(~ 1), data=data, method='gest')
+summary(snm1)
+
+# Continuous: 3 parameter
+snm1 <- DTRreg(cd4_wk45, list(~ male + cd40), 
+               list(art ~ male + age0 + age_sq + age_cu + cd40 + cd4_sq + cd4_cu + dvl0), 
+               list(~ 1), data=data, method='gest')
+summary(snm1)
+
+# Continuous: 5 parameter
+snm1 <- DTRreg(cd4_wk45, list(~ male + dvl0 + cd40 + age0), 
+               list(art ~ male + age0 + age_sq + age_cu + cd40 + cd4_sq + cd4_cu + dvl0), 
+               list(~ 1), data=data, method='gest')
+summary(snm1)
+
+
+# Binary: 1 parameter
+snm1 <- DTRreg(dead, list(~ 1), 
+               list(art ~ male + age0 + age_sq + age_cu + cd40 + cd4_sq + cd4_cu + dvl0), 
+               list(~ 1), data=data, method='gest')
+summary(snm1)
+
+# Binary: 2 parameter
+snm1 <- DTRreg(dead, list(~ male), 
+               list(art ~ male + age0 + age_sq + age_cu + cd40 + cd4_sq + cd4_cu + dvl0), 
+               list(~ 1), data=data, method='gest')
+summary(snm1)
+
+# Binary: 3 parameter
+snm1 <- DTRreg(dead, list(~ male + cd40), 
+               list(art ~ male + age0 + age_sq + age_cu + cd40 + cd4_sq + cd4_cu + dvl0), 
+               list(~ 1), data=data, method='gest')
+summary(snm1)
+
+# Binary: 5 parameter
+snm1 <- DTRreg(dead, list(~ male + dvl0 + cd40 + age0), 
+               list(art ~ male + age0 + age_sq + age_cu + cd40 + cd4_sq + cd4_cu + dvl0), 
+               list(~ 1), data=data, method='gest')
+summary(snm1)
