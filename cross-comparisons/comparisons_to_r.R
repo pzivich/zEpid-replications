@@ -190,3 +190,12 @@ snm1 <- DTRreg(dead, list(~ male + dvl0 + cd40 + age0),
                list(art ~ male + age0 + age_sq + age_cu + cd40 + cd4_sq + cd4_cu + dvl0), 
                list(~ 1), data=data, method='gest')
 summary(snm1)
+
+
+### SMD ###
+library(stddiff)
+
+treat<-c(1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0)
+category<-c(1, 2, 3, 1, 2, 3, 1, 3, 2, 1, 2, 3, 2, 1)
+data<-data.frame(treat,category)
+stddiff.category(data=data,gcol=1,vcol=c(2,2))
